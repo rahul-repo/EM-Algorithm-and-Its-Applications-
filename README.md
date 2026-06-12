@@ -8,6 +8,8 @@ The study combines image preprocessing techniques with statistical learning meth
 
 ---
 
+## Project Year: 2024
+
 ## Objectives
 
 * Apply EM algorithm for image segmentation

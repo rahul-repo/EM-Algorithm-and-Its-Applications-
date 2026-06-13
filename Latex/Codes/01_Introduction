@@ -1,0 +1,9 @@
+\section{Introduction}
+ In real-world machine learning applications, it is common to have many relevant features, but only a subset of them may be observable. When dealing with variables that are sometimes observable and sometimes not, it is indeed possible to utilize the instances when that variable is visible or observed in order to learn and make predictions for the instances where it is not observable. The EM algorithm was proposed and named in a seminal paper published in 1977 by Arthur Dempster, Nan Laird, and Donald Rubin. Their work formalized the algorithm and demonstrated its usefulness in statistical modeling and estimation.
+ The expectation-maximization algorithm can be used to handle situations where variables are partially observable. When certain variables are observable, we can use those instances to learn and estimate their values. Then, we can predict the values of these variables in instances when it is not observable. 
+ \subsection{Mathematical Formulation of EM}
+ X is the observed data set.
+ \\Y is the not observed data set.
+ \\Z=(X,Y) is the complete data set.
+ \\l($\theta$;X,Y)=log likelihood of the complete data set.
+ \\\\We wish to obtain MLE(Maximum Likelihood Estimation) of $\theta$.

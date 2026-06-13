@@ -91,11 +91,11 @@ Latex/Images/
 
 ## Authors and Contributions
 
-This project was completed as a group academic project under faculty supervision.
+This project was completed as a group academic project. 
 
 ### Authors
 
-* Rahul Ganguly
+* Rahul Ganguly(B.Stat ISI Kolkata)
 * [Other authors as listed in the project report]
 
 ---

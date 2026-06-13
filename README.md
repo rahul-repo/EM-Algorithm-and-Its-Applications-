@@ -53,7 +53,11 @@ The dataset consists of MRI scan images used for segmentation tasks, including:
 ---
 ![Tumor Segmentation](Latex/Images/Figure_2%20Segmentation%20into%20tumor%20and%20non%20tumor%20region.png)
 
+**Figure 2: Segmentation into Tumor and Non-Tumor Region**
+
 ![Final Output](Latex/Images/Figure_3_Final%20Output.png)
+
+**Figure 3: Final Output**
 ## Key Contributions
 
 * Implemented EM algorithm for medical image segmentation
@@ -80,7 +84,7 @@ README.md
 Em.pdf
 Latex/                   
 Latex/Codes/
-latex/Images/
+Latex/Images/
 ```
 
 ---

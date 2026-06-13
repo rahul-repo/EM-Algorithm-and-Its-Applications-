@@ -1,0 +1,111 @@
+\section{Steps}
+\subsection{E(Expectation) Step}
+\subsubsection{Introduction}In this step, we use the observed data to estimate or guess the values of the missing or incomplete data. It is used to update the variables. 
+Compute the posterior probability or responsibility of each latent variable given the observed data and current parameter estimates.
+Estimate the missing or incomplete data values using the current parameter estimates.
+Compute the log-likelihood of the observed data based on the current parameter estimates and estimated missing data.
+
+\subsubsection{Mathematical Formulation of E Step}
+In this step we compute the expected value of  l($\theta$;X,Y).
+\\\\We define,
+           Q($\theta$;$\theta$_{old})=E(l($\theta$;X,Y)\(|\)X,$\theta$_{old})
+\\\\ =$$\int$$l($\theta$;X,y)p(y\(|\)X,$\theta$_{old})dy
+
+
+\subsection{M(Maximization) Step}
+\subsubsection{Description}In this step, we need to maximize the likelihood function which we get in the E step. It can be done using several optimization numerical methods.
+\subsubsection{Mathematical Formulation of M Step}
+
+\[\theta=\underset{\theta\in\Theta}{\mathrm{arg max}}\,  Q(\theta;\theta_{old})\]
+\\\\Now, l($\theta$;x)=ln(p(X\(|\)$\theta$))
+\\\\=ln $\int$ p(X,y\(|\)\theta)dy
+\\\\= ln $\int$ [p(X,y\(|\)\theta)p(y\(|\)X,$\theta$_{old})]/[$p(y\(|\)X,$\theta$_{old}$)] dy
+\\\\=ln  E[ [(p(X,Y\(|\)$\theta$))/(P(Y\(|\)X,$\theta$_{old}))]
+\(|\)X,$\theta$_{old})\hspace{1 mm}]
+\\\\ \ge E \hspace{1.5 mm}[ ln \hspace{1.2 mm}[(p(X,Y\(|\)$\theta$))/p(Y\(|\)X,$\theta$_{old})]\(|\)X,$\theta$_{old})\hspace{1 mm}]
+\\\\=E[ln(p(X,Y\(|\)\theta)\(|\)X,$\theta$_{old}] 
+\num{-}E[ln(p(Y\(|\)X,$\theta$_{old}))\(|\)X,$\theta$_{old}]
+\\\\=Q(\theta;$\theta$_{old}$)\num{-}E[ln(p(Y\(|\)X,$\theta$_{old}))\(|\)X,$\theta$_{old}]
+
+
+\subsection{Derivation of the EM algorithm}
+
+\vspace{5 mm}
+\begin{itemize}
+    \item Suppose we have some data X with joint pdf p(X \(|\)$\theta$)
+    \item Let l($\theta$) = ln p(X\(|\)$\theta$) denotes the log - likelihood.
+    \item Now suppose we are trying to guess at $\theta$ and improve our guesses through some sort of iteration. Let ${\hat{\theta}}^{(n)}$ be our nth iteration guess.
+    \item We would like to find a new value for $\theta $ that satisfies: - 
+    
+   \hspace{35 mm}  l(${\hat{\theta}}^{(n)}$) \le l($\theta$)
+    \item We will introduce some hidden variables Y, either because we are actually working with a model that has hidden(unobserved) variables or "artificially" because they make the maximization more tractable.
+    \item So, we may write, 
+
+   \hspace{20 mm} l($\theta$) - l(${\hat{\theta}}^{(n)}$) = ln p(X \(|\)$\theta$) - ln p(X \(|\)${\hat{\theta}}^{(n)}$)
+
+   \hspace{40 mm} ln($\int$ p(X\(|\)y ,$\theta$) p(y\(|\)$\theta$) dy) - ln p(X \(|\)${\hat{\theta}}^{(n)}$)
+
+    \hspace{41 mm}= ln($\int$ [(p(X\(|\)y,$\theta$) p(y\(|\)$\theta$))/ p(y\(|\)X, ${\hat{\theta}}^{(n)}$)]p(y\(|\)X,
+    
+    \hspace{43 mm} ${\hat{\theta}}^{(n)}$) dy  - ln p(X \(|\) ${\hat{\theta}}^{(n)}$)
+
+    \item Note that the thing in parentheses is an expectation with respect to the distribution of Y \(|\)X , ${\hat{\theta}}^{(n)}$. So, applying Jensen's inequality, we have,
+
+    \hspace{20 mm} l($\theta$) - l(${\hat{\theta}}^{(n)}$) \ge ($\int$ ln[(p(X\(|\)y,$\theta$) p(y\(|\)$\theta$))/ p(y\(|\)X, ${\hat{\theta}}^{(n)}$)]p(y\(|\)X,
+    
+    \hspace{43 mm} ${\hat{\theta}}^{(n)}$) dy  - ln p(X\(|\)${\hat{\theta}}^{(n)}$))
+
+     \hspace{40 mm} = ($\int$ ln[[(p(X\(|\)y,$\theta$) p(y\(|\)$\theta$))]/ [p(y\(|\)X, ${\hat{\theta}}^{(n)}$) p(X\(|\)${\hat{\theta}}^{(n)}$)]]
+     
+     \hspace{43 mm} p(y\(|\)X, ${\hat{\theta}}^{(n)}$) dy)
+
+     \ call the entire integral d($\theta$\(|\)${\hat{\theta}}^{(n)}$). 
+
+     \ We then have , 
+
+     \hspace{30 mm}  l(${\hat{\theta}}^{(n)}$) +  d($\theta$\(|\)${\hat{\theta}}^{(n)}$) \le l($\theta$) 
+     \item Note that
+
+     
+     \hspace{20 mm} d(${\hat{\theta}}^{(n)}$\(|\)${\hat{\theta}}^{(n)}$) =$\int$ln(p(X\(|\)y,${\hat{\theta}}^{(n)})p(y\(|\)${\hat{\theta}}^{(n)}$)/(p(y\(|\)X,${\hat{\theta}}^{(n)}$)p(X\(|\)${\hat{\theta}}^{(n)}$))(p(y\(|\)X,${\hat{\theta}}^{(n)}$))dy
+
+     \hspace{40 mm} =$\int$ln(p(X,y\(|\)$\hat{\theta}}^{(n)}$)/p(X,y\(|\)$\hat{\theta}}^{(n)}$)})p(y\(|\)X,${\hat{\theta}}^{(n)}$)dy
+
+     \hspace{43 mm} =$\int$ln(1)p(y\(|\)X,${\hat{\theta}}^{(n)}$)dy = 0
+
+     \item So, we have that l(${\hat{\theta}}^{(n)}$) +  d($\theta$\(|\)${\hat{\theta}}^{(n)}$) is bounded above by $l(\theta)$ and that is equal to this upper bound at the point $\theta={\hat{\theta}}^{(n)}$.
+     
+     If we maximize l(${\hat{\theta}}^{(n)}$) +  d($\theta$\(|\)${\hat{\theta}}^{(n)}$) with respect to \theta (equivalently \hspace{1.5 mm}maximize \hspace{1.5 mm}$d($\theta$\(|\)${\hat{\theta}}^{(n)}$)$\hspace{1.5mm} with
+     
+     \hspace{9 mm}respect to  $\theta$,we may improve towards maximising l($\theta$).We know at least,that
+     
+     \hspace{9 mm}we will not get worse.
+
+   
+      
+       \hspace{4 mm} •  \hspace{0.7 mm}Maximizing 
+
+     \hspace{20 mm} d($\theta$\(|\)${\hat{\theta}}^{(n)}$) =$\int$ln(p(X\(|\)y,$\theta$)p(y\(|\)$\theta$)/p(y\(|\)X,${\hat{\theta}}^{(n)}$)p(X\(|\)${\hat{\theta}}^{(n)}$))(p(y\(|\)X,${\hat{\theta}}^{(n)}$))dy
+
+     \hspace{9 mm}with respect to $\theta$ is equivalent to maximizing
+
+     \hspace{40 mm} $\int$ln(p(X\(|\)y,$\theta$)p(y\(|\)$\theta$)(p(y\(|\)X,${\hat{\theta}}^{(n)}$))dy
+
+     \hspace{9 mm}with respect to $\theta$.
+     
+
+     \hspace{9 mm}Note that this is
+
+     \hspace{43 mm} $\int$ln(p(X,y\(|\)$\theta$))p(y\(|\)X,${\hat{\theta}}^{(n)}$)dy
+     
+     \hspace{9 mm}which is 
+     
+     \hspace{47 mm}  E_{Y}[\ln(p(X,Y\(|\)$\theta$))\(|\)X,${\hat{\theta}}^{(n)}$]
+
+     
+ \item So, if we could compute this expectation, maximize it with respect to $\theta$ , call the result ${\hat{\theta}}^{(n+1)}$ and iterate, we can improve towards finding the $\theta$ that maximizes the likelihood (or at least not get worse).In other words , we can improve towards finding the MLE of $\theta$.
+
+ These expectation and maximization steps are precisely the EM algorithm !
+
+    
+\end{itemize}

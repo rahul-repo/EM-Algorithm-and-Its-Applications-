@@ -1,0 +1,190 @@
+\section{Application of EM in  Brain Tumor Detection}
+\subsection{Introduction}
+The body is comprised of numerous sorts of cells. Every 
+kind of which has extraordinary capacities. The majority of 
+them develop, afterward partition in a methodical way so 
+new cells are framed. They are expected to retain body 
+function appropriately. These cells and spinal line 
+together shape the Central Nervous System. At the point 
+where the capacity to control their development is lost; 
+separation takes place again and again, with no request. 
+The additional cells shape a lump of the substance called a 
+tumor. Identification of the brain tumor in its beginning 
+time after treatment is the main cure for the 
+sickness. The causes of the ailment are not clear nor are the 
+explanations behind an expanded number of such cases. As 
+of now, there are no techniques to counteract brain tumors, 
+which is the reason early recognition speaks to an essential 
+factor in tumor treatment. MRI is the preferred standpoint over 
+different imaging with delicate tissue yielding a point-by-point image with unambiguous and differentiating limits 
+among anatomical structures. Exact estimations in the 
+analysis are very troublesome because of the various shapes, 
+dimensions and aspects of tumors. Thus consolidating the 
+ strategy named EM (Expectation Maximization)  consequently 
+expanding the precision of the framework. So we are going to show the highlighted regions in the tumour in the brain when an MRI image of the brain is given as input.
+ \subsection{Overview of the proposed method}
+ Our method consists of five steps given as follows:
+\begin{center}
+\includegraphics{picture.png}
+\end{center}
+\subsubsection{INPUT MRI}
+To embark on our journey towards tumor detection using MRI images, our foremost task is to curate a comprehensive dataset comprising both tumor and non-tumor samples. This dataset serves as the foundation upon which our algorithm will be trained and evaluated. With meticulous care, we gather MRI images from various sources, ensuring diversity in pathology, imaging parameters, and anatomical regions.Once the dataset is assembled, the crucial step of preprocessing ensues. We meticulously standardize the size, orientation, and resolution of each image, harmonizing the data for seamless integration into our analysis pipeline.Through this diligent process of data collection and preprocessing, we lay the groundwork for our journey towards accurate tumor detection, poised to unlock insights from the intricate world of medical imaging.
+\subsubsection{GRAYSCALE AND SMOOTHING}
+Grayscale conversion is a fundamental process in image processing that transforms a color image into a single-channel representation, where each pixel is represented by a single intensity value ranging from black to white. This process simplifies the image, making it easier to analyze and process while preserving important information about the image's structure and features.It reduces
+each pixel's representation from three color channels (red, green, and blue) to a single intensity value.
+
+The range of 0 to 255 commonly represents the intensity values in an 8-bit grayscale image. In such images, each pixel is represented by a single value ranging from 0 (black) to 255 (white), with intermediate values representing shades of gray. This range encompasses a total of 256 possible intensity levels.
+
+Here's what each value typically represents in an 8-bit grayscale image:
+
+- 0: Represents the darkest shade, usually interpreted as black
+
+
+- 255: Represents the brightest shade, usually interpreted as white.
+
+
+- Intermediate values (1 to 254): Represent various shades of gray, with 
+lower values being darker and higher values being lighter.
+
+This range allows for a wide range of intensity levels to be captured and displayed in grayscale images, making them suitable for various image processing and analysis tasks.
+
+Through smoothing operations such as Gaussian filtering or median filtering, we gently sculpt the intensity landscape, blurring high-frequency noise while preserving essential image features. This delicate balance between noise reduction and feature preservation lays the foundation for accurate interpretation and automated analysis of MRI data
+\subsubsection{ENHANCE THE MRI IMAGE CONTRAST BY PDF}
+As tumor detection is mainly based on the intensity of MRI images, the contrast of the images 
+is very important.A piecewise linear histogram transformation is usually employed to enhance the intensity 
+contrast. 
+\begin{center}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\linewidth]{WhatsApp Image 2024-05-10 at 09.07.07_43cc9fb2.jpg}
+        \caption{Histogram of intensity vs no of pixel of grayscale  MRI image of brain with tumor}
+        \label{fig:enter-label}
+    \end{figure}
+\end{center}
+However, it is difficult to determine a fixed set of lower and upper limits of the transformation slope for all images because they are data dependent. In this study, we automatically and adaptively determine the parameters from each image. . In brain MRI
+images, there are two classes of tissues: tumor, healthy brain. First, sample 
+voxels of the two classes are manually selected from the training data. The intensity PDFs 
+of each class is estimated.
+
+
+\\We also compute their mean values (\mu^A_{tumor},\mu^A_{brain})\newline   their\hspace{2mm}  standard \hspace{2mm} deviations(\sigma_{tumor},\sigma_{brain}) \hspace{2mm} and \hspace{2mm} M^A. 
+ 
+   
+
+
+
+     
+     
+       
+       
+       
+       where \hspace{2mm}M^A \hspace{2mm}is\hspace{2mm} the\hspace{2mm} intensity\hspace{2mm} value\hspace{2 mm} which\hspace{2mm}has \hspace{2 mm}the\hspace{2 mm}highest\hspace{2 mm} probability\hspace{2mm} in\hspace{2 mm} brain\hspace{2mm} class.
+       
+       \hspace{2mm}M^B\hspace{2mm} is \hspace{2mm} the\hspace{2mm}  intensity \hspace{2mm}value\hspace{2 mm}with\hspace{2 mm}highest\hspace{2 mm} probability \hspace{2mm} in\hspace{2 mm} tumor\hspace{2mm} class.
+      \hspace{2 mm}The\hspace{2mm} mean \hspace{2mm}values 
+      
+      \hspace{2 mm}have\hspace{2 mm} the\hspace{2mm} property\hspace{2mm} of (\mu^A_{tumor}<\mu^A_{brain}). 
+
+
+
+     As a result, the mean values of the tumor is estimated as \newline\mu_{tumor}=M^B-M^A+\mu^A_{tumor}.
+
+
+     Now, we set the lower limit as T_{min} =\mu_{tumor}-3\sigma_{tumor}
+
+
+      
+\subsubsection{EM IMPLEMENTATION}
+In many applications, we consider a Gaussian Distribution for representing a data distribution because the mathematical manipulations for Gaussian function are relatively easier.In our project, A Gaussian Mixture Model(GMM) is employed to represent the pixel distribution of the main brain tissues.We are interested in finding the probability that each point belongs to a given cluster.The density function can be written as the sum of weighted Gaussians,i.e.,suppose we have used 'K' many clusters to represent our data  distribution,then density:
+
+p($\vec{X}$)=\pi_{1}N(\vec{X}|\vec{\mu_{1}},\Sigma{1})+\pi_{2}N(\vec{X}|\vec{\mu_{2}},\Sigma{2})+.......+\pi_{K}N(\vec{X}|\vec{\mu_{K}},\Sigma_{K})
+
+where $\sum_{j=1}^{K} \pi_{j} = 1$  and $\pi_{k}$ is called the mixing coefficient for the 
+
+kth cluster, 0\le\pi_{k}\le1.\
+               
+\\This is the mixture model.
+
+Now, the log-likelihood will be:
+
+\ln(p(X|\mu,\Sigma,\pi))
+=\sum_{n=1}^{N}\ln(p(X_n))
+=\sum_{n=1}^{N}\ln\{\sum_{j=1}^{K} \pi_{j} N(X_n|\mu_{j},\Sigma_{j})\}
+
+        where N is the total number of data points.
+
+We cannot apply MLE in this case because there is no closed form solution.
+
+
+So,we will estimate these parameters using EM algorithm:-
+
+\textbf{Step 1:} Initialize the parameters \mu_{j},\Sigma_{j},\pi_{j}.
+
+\textbf{Step 2:E-Step} 
+
+Calculate the posterior probabilities($\gamma_{k} (X_{n})$) based on the 
+
+current parameter values.Here 'k' is the latent variable.
+
+We can think of mixing coefficients as the prior probabilities for the 
+
+components.
+
+Posterior probability:
+
+\gamma_{k} (X_{n})=p(k|X_{n})=\frac{p(k)p(X_n|k)}{p(X_{n})}
+                             =\frac{\pi_{k}N(X_{n}|\mu_{k},\Sigma_{k})}{\sum_{j=1}^{K} \pi_{j} N(X_n|\mu_{j},\Sigma_{j})}
+
+                             where $\pi_{k}=\frac{N_{k}}{N}$,$N_{k}$=Number of points assigned to kth cluster.
+
+\textbf{Step 3:M-Step} 
+
+Re-estimate parameter values of the model using the current posterior 
+
+probabilities.The parameter update formulas are as follows:
+
+{\pi_{k}}^{new}=\frac{1}{N} \sum_{n=1}^{N} \gamma_{k} (X_{n})
+
+{\mu_{k}}^{new}=\frac{\sum_{n=1}^{N} \gamma_{k} (X_{n}) X_{n}}{\sum_{n=1}^{N} \gamma_{k} (X_{n})}
+
+{\Sigma_{k}}^{new}=\frac{\sum_{n=1}^{N} \gamma_{k} (X_{n}) (X_{n}-{\mu_{k}}^{new}) (X_{n}-{\mu_{k}}^{new})^T}{\sum_{n=1}^{N} \gamma_{k} (X_{n})}
+
+Repeat the iterations until convergence.\\
+
+
+\subsubsection{SEGMENTATION INTO TUMOR AND NON-TUMOR REGION}
+Segmentation,the process of partitioning an image into meaningful clusters,lies at the heart of tumor detection in medical imaging.Grounded in statistical principles, the EM algorithm operates by iteratively estimating the underlying probability distribution of image intensities.Through the interplay of expectation and maximizing steps,the algorithm converges towards a solution that optimally separates tumor and non-tumor components.
+
+
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width = \textwidth]{TU2.jpg}
+\caption{MRI image of tumor}
+\label{fig:left}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width = \textwidth]{tu 2.jpg}
+\caption{}
+\label{fig:right}
+\end{subfigure}
+\caption{Segmentation into tumor and non-tumor region}
+\label{fig:combined}
+\end{figure}
+
+
+The red colour indicates tumor region in (b) of figure 2.
+\begin{center}
+    \begin{figure}
+        \centering
+        \includegraphics[width=1.2\linewidth]{Y.jpg}
+        \caption{Final Output}
+        \label{fig:enter-label}
+    \end{figure}
+\end{center}
+\newpage
+Higher colour intensity indicates the tumor regions.

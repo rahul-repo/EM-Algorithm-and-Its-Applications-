@@ -51,7 +51,7 @@ The dataset consists of MRI scan images used for segmentation tasks, including:
 * Tumor vs non-tumor segmentation
 
 ---
-![Prediction and Confidence Interval Graph](Latex/Images/Figure%202%20Segmentation%20into%20tumor%20and%20non%20tumor%20region.png)
+![Tumor Segmentation](Latex/Images/Figure_2%20Segmentation%20into%20tumor%20and%20non%20tumor%20region.png)
 ## Key Contributions
 
 * Implemented EM algorithm for medical image segmentation
